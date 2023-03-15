@@ -1,5 +1,5 @@
 import os.path
-
+import yaml
 from pkg.plugin.models import *
 from pkg.plugin.host import EventContext, PluginHost
 
@@ -36,7 +36,7 @@ class HelloPlugin(Plugin):
 
             # 回复消息 "hello, <发送者id>!"
 
-            event.add_return("reply", [message+str(kwargs['sender_id'])])
+            event.add_return("reply", [message])
 
             # 阻止该事件默认行为（向接口获取回复）
             event.prevent_default()
@@ -45,16 +45,34 @@ class HelloPlugin(Plugin):
     @on(GroupNormalMessageReceived)
     def group_normal_message_received(self, event: EventContext, **kwargs):
         msg = kwargs['text_message']
-        if msg == "hello":  # 如果消息为hello
+        this_path = os.getcwd()
 
-            # 输出调试信息
-            logging.debug("hello, {}".format(kwargs['sender_id']))
+        if msg == "jtj":  # 如果消息为jtj
 
-            # 回复消息 "hello, everyone!"
-            event.add_return("reply", ["hello, everyone!"])
+            data = open(f"{this_path}/plugins/Luoxue/data.json").read()
+            if not data:
+                reply = "当前无上报数据"
+            else:
+                reply = "True"
 
-            # 阻止该事件默认行为（向接口获取回复）
-            event.prevent_default()
+        #增添匹配
+        yaml_text = open(f"{this_path}/plugins/Luoxue/config.yaml").read()
+        config = yaml.load(yaml_text)
+        for key,values in config.items():
+            if msg == values+"j":
+                reply = key
+                break
+
+
+
+        # 输出调试信息
+        logging.debug(reply+str(kwargs['sender_id']))
+
+        # 回复消息 "hello, <发送者id>!"
+
+        event.add_return("reply", [reply])
+        # 阻止该事件默认行为（向接口获取回复）
+        event.prevent_default()
 
     # 插件卸载时触发
     def __del__(self):
