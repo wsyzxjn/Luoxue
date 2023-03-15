@@ -42,7 +42,7 @@ class HelloPlugin(Plugin):
             event.prevent_default()
 
     # 当收到群消息时触发
-    @on(GroupNormalMessageReceived)
+    @on(GroupMessageReceived)
     def group_normal_message_received(self, event: EventContext, **kwargs):
         msg = kwargs['text_message']
         this_path = os.getcwd()
