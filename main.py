@@ -23,7 +23,7 @@ class HelloPlugin(Plugin):
     def person_normal_message_received(self, event: EventContext, **kwargs):
         msg = kwargs['text_message']
         if msg == "jtj":  # 如果消息为jtj
-            DataFile = open("./data/json")
+            DataFile = open("./data.json")
             DataText = DataFile.read()
             if not DataText:
                 message = "当前无上报数据"
