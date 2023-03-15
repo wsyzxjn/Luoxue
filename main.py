@@ -57,7 +57,7 @@ class HelloPlugin(Plugin):
 
         #增添匹配
         yaml_text = open(f"{this_path}/plugins/Luoxue/config.yaml")
-        config = yaml.load(yaml_text)
+        config = yaml.load(yaml_text,Loader=yaml.FullLoader)
         for key,values in config.items():
             if msg == values+"j":
                 reply = key
