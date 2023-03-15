@@ -1,5 +1,3 @@
-import os.path
-
 from pkg.plugin.models import *
 from pkg.plugin.host import EventContext, PluginHost
 
@@ -9,7 +7,7 @@ from pkg.plugin.host import EventContext, PluginHost
 
 
 # 注册插件
-@register(name="Luoxue", description="hello world", version="0.1", author="RockChinQ")
+@register(name="Hello", description="hello world", version="0.1", author="RockChinQ")
 class HelloPlugin(Plugin):
 
     # 插件加载时触发
@@ -17,25 +15,17 @@ class HelloPlugin(Plugin):
     def __init__(self, plugin_host: PluginHost):
         pass
 
-
     # 当收到个人消息时触发
     @on(PersonNormalMessageReceived)
     def person_normal_message_received(self, event: EventContext, **kwargs):
         msg = kwargs['text_message']
-        if msg == "jtj":  # 如果消息为jtj
-            DataFile = open("./data/json")
-            DataText = DataFile.read()
-            if not DataText:
-                message = "当前无上报数据"
-            else:
-                message = "True"
+        if msg == "hello":  # 如果消息为hello
 
             # 输出调试信息
-            logging.debug(message+(kwargs['sender_id']))
+            logging.debug("hello, {}".format(kwargs['sender_id']))
 
             # 回复消息 "hello, <发送者id>!"
-
-            event.add_return("reply", [message+(kwargs['sender_id'])])
+            event.add_return("reply", ["hello, {}!".format(kwargs['sender_id'])])
 
             # 阻止该事件默认行为（向接口获取回复）
             event.prevent_default()
