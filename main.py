@@ -59,11 +59,10 @@ class HelloPlugin(Plugin):
         yaml_text = open(f"{this_path}/plugins/Luoxue/config.yaml")
         config = yaml.load(yaml_text,Loader=yaml.FullLoader)
         for key,values in config.items():
-            if msg == values+"j":
-                reply = key
-                break
-
-
+            for l in values:
+                if msg == l:
+                    reply = "get"
+                    break
 
         # 输出调试信息
         logging.debug(reply+str(kwargs['sender_id']))
